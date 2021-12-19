@@ -1,7 +1,7 @@
 package com.supercomputra;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Vector;
 
 class Menu<T extends Menu.Item> {
     static class Item {
@@ -14,31 +14,39 @@ class Menu<T extends Menu.Item> {
         Integer discount;
     }
 
-    private final ArrayList<T> menuItems;
-    private final HashMap<String, Integer> menuLookups;
+    private final Vector<T> menuItems;
 
     Menu() {
-        this.menuItems = new ArrayList<>();
-        this.menuLookups = new HashMap<>();
+        menuItems = new Vector<T>();
     }
 
-    ArrayList<T> getMenuItems() {
-        return this.menuItems;
+    Vector<T> getMenuItems() {
+        return menuItems;
+    }
+
+    private Integer indexForItemWith(String id) {
+        for (Integer i = 0; i < menuItems.size(); i++) {
+            T item = menuItems.get(i);
+            if (item.id.equals(id)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     void addMenuItem(T item) throws DuplicateInstanceException {
-        if (menuLookups.containsKey(item.id)) {
+        Integer index = indexForItemWith(item.id);
+        if (index >= 0) {
             throw new DuplicateInstanceException();
         }
+
         menuItems.add(item);
-        menuLookups.put(item.id, menuItems.size() - 1);
     }
 
     void removeMenuItemWith(String id) throws NotFoundException {
-        if (menuLookups.containsKey(id)) {
-            Integer index = menuLookups.get(id);
-            this.menuItems.remove(index);
-            this.menuLookups.remove(id);
+        Integer index = indexForItemWith(id);
+        if (index >= 0) {
+            menuItems.remove(index);
         } else {
             throw new NotFoundException();
         }

@@ -1,13 +1,14 @@
 package com.supercomputra;
 
 import java.util.HashSet;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Set;
 
 public class InputUtility {
     static Integer getInteger(String message, Set<Integer> options) {
         Boolean selected = false;
-        Integer result;
+        Integer result = Integer.MIN_VALUE;
         do {
             // Print query
             Set<String> stringOptions = new HashSet<String>();
@@ -21,9 +22,15 @@ public class InputUtility {
 
             // Get input
             Scanner scanner= new Scanner(System.in);
-            result = scanner.nextInt();
-            if (options.contains(result)) {
-                selected = true;
+
+
+            try {
+                result = scanner.nextInt();
+                if (options.contains(result)) {
+                    selected = true;
+                }
+            } catch (InputMismatchException exception) {
+                System.out.println("Expecting an integer input. Try again!");
             }
 
         } while (!selected);
@@ -32,7 +39,7 @@ public class InputUtility {
 
     static Integer getInteger(String message, Integer lowerBound, Integer upperBound) {
         Boolean selected = false;
-        Integer result;
+        Integer result = Integer.MIN_VALUE;
         do {
             // Print query
             String query = String.format("%s [%d-%d]: ", message, lowerBound, upperBound);
@@ -40,9 +47,13 @@ public class InputUtility {
 
             // Get input
             Scanner scanner= new Scanner(System.in);
-            result = scanner.nextInt();
-            if (result <= upperBound && result >= lowerBound) {
-                selected = true;
+            try {
+                result = scanner.nextInt();
+                if (result <= upperBound && result >= lowerBound) {
+                    selected = true;
+                }
+            } catch (InputMismatchException exception) {
+                System.out.println("Expecting an integer input. Try again!");
             }
         } while (!selected);
         return result;

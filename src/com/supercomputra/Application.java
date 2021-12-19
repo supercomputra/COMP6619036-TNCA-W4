@@ -14,7 +14,7 @@ public class Application {
     }
 
     static Set<Integer> defaultDiscounts() {
-        return new HashSet<>(){{
+        return new HashSet<>() {{
             add(10);
             add(25);
             add(50);
@@ -37,7 +37,6 @@ public class Application {
             System.out.println("Add Regular Menu Success!");
         } catch (DuplicateInstanceException exception) {
             System.out.println(exception.getMessage());
-            addRegularMenu();
         }
     }
 
@@ -58,7 +57,6 @@ public class Application {
             System.out.println("Add Special Menu Success!");
         } catch (DuplicateInstanceException exception) {
             System.out.println(exception.getMessage());
-            addSpecialMenu();
         }
     }
 
@@ -69,7 +67,7 @@ public class Application {
             regularMenuTable.setShowVerticalLines(true);
             regularMenuTable.setHeaders("No.", "Code", "Name", "Price");
             Integer regularMenuTableCount = 0;
-            for (Menu.Item item: regularMenu.getMenuItems()) {
+            for (Menu.Item item : regularMenu.getMenuItems()) {
                 regularMenuTableCount++;
                 regularMenuTable.addRow(regularMenuTableCount.toString(), item.id, item.name, item.price.toString());
             }
@@ -82,7 +80,7 @@ public class Application {
             specialMenuTable.setShowVerticalLines(true);
             specialMenuTable.setHeaders("No.", "Code", "Name", "Price", "Discount");
             Integer specialMenuTableCount = 0;
-            for (Menu.SpecialItem item: specialMenu.getMenuItems()) {
+            for (Menu.SpecialItem item : specialMenu.getMenuItems()) {
                 specialMenuTableCount++;
                 specialMenuTable.addRow(specialMenuTableCount.toString(), item.id, item.name, item.price.toString(), item.discount.toString());
             }
@@ -99,7 +97,6 @@ public class Application {
             System.out.println("Regular Menu Successfully Removed!");
         } catch (NotFoundException exception) {
             System.out.println(exception.getMessage());
-            removeRegularMenu();
         }
     }
 
@@ -112,9 +109,7 @@ public class Application {
             System.out.println("Special Menu Successfully Removed!");
         } catch (NotFoundException exception) {
             System.out.println(exception.getMessage());
-            removeRegularMenu();
         }
-
     }
 
     static String separator() {
@@ -131,22 +126,11 @@ public class Application {
         options.add("4. Remove Regular Menu");
         options.add("5. Remove Special Menu");
         options.add("6. Exit");
-        for (String option: options) {
+        for (String option : options) {
             System.out.println(option);
         }
 
-        Boolean selected = false;
-        Integer option = 6;
-        do {
-            String query = String.format("Choice [%d-%d]: ", 1, options.size());
-            System.out.print(query);
-            Scanner scanner= new Scanner(System.in);
-            option = scanner.nextInt();
-            if (option <= options.size() && option >= 1) {
-                selected = true;
-            }
-        } while (!selected);
-
+        Integer option = InputUtility.getInteger("Choice", 1, options.size());
         switch (option) {
             case 1:
                 this.addRegularMenu();
@@ -164,7 +148,7 @@ public class Application {
                 this.removeSpecialMenu();
                 run();
             default:
-                return;
+                break;
         }
     }
 }
