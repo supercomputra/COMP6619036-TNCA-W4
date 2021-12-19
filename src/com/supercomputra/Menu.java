@@ -46,7 +46,7 @@ class Menu<T extends Menu.Item> {
     void removeMenuItemWith(String id) throws NotFoundException {
         Integer index = indexForItemWith(id);
         if (index >= 0) {
-            menuItems.remove(index);
+            menuItems.removeElementAt(index);
         } else {
             throw new NotFoundException();
         }
